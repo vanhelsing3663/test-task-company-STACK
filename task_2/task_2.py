@@ -1,7 +1,7 @@
 import pandas as pd
 
 # загрузка данных из csv файла в pandas DataFrame
-df = pd.read_csv('показания.csv',sep=';')
+df = pd.read_csv('показания.csv', sep=';')
 
 # создание новой колонки 'Total' с суммой значений по месяцам
 df['Total'] = df['Апрель'] + df['Май'] + df['Июнь']
@@ -13,15 +13,18 @@ df_common = df[df['№ Квартиры'] == 0]
 df_apartments = df[df['№ Квартиры'] > 0]
 
 # группировка данных по номеру дома и суммирование значений Total
-grouped_common = df_common.groupby('№ Дома')['Total'].sum()
-grouped_apartments = df_apartments.groupby('№ Дома')['Total'].sum()
+grouped_common = df_common.groupby('№ дома')['Total'].sum()
+grouped_apartments = df_apartments.groupby('№ дома')['Total'].sum()
 
 # проверка на равенство суммы по общедомовому счетчику и сумме по квартирным счетчикам
 for house in grouped_common.index:
     if grouped_common[house] != grouped_apartments.get(house, 0):
         print('В доме №', house, 'возможно переданы неверные показания.')
 
-
+# ОТВЕТ
+# В доме № 1 возможно переданы неверные показания.
+# В доме № 2 возможно переданы неверные показания.
+# В доме № 4 возможно переданы неверные показания.
 
 # Дана таблица с показаниями счетчиков электроэнергии за 2 квартал (апрель, май, июнь) в файле "Показания.csv"
 # В таблице строка, содержащая номер квартиры - относится к квартирному счетчику. Строка, где № квартиры равен 0 - к общедомовому.
